@@ -1,25 +1,21 @@
-@mixin sm(){
-    @media screen and (min-width:480px) {
-        @content
-        
-    }
+@mixin sm() {
+  @media screen and (min-width: 640px) {
+    @content;
+  }
 }
 
-@mixin md(){
-    @media screen and (min-width:580px) {
-        @content
-        
-    }
+@mixin md() {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
 }
-@mixin lg(){
-    @media screen and (min-width:780px) {
-        @content
-        
-    }
+@mixin lg() {
+  @media screen and (min-width: 1024px) {
+    @content;
+  }
 }
-@mixin xl(){
-    @media screen and (min-width:980px) {
-        @content
-        
-    }
+@mixin xl() {
+  @media screen and (min-width: 1280px) {
+    @content;
+  }
 }

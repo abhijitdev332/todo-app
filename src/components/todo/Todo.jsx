@@ -26,7 +26,7 @@ const Todo = ({ todo }) => {
   // }, [checked]);
   return (
     <div>
-      <div className="flex gap-3 items-center" onClick={handleChange}>
+      <div className="flex  items-center">
         {/* <input
           type="checkbox"
           // checked={todo.status == "completed" ? true : ""}
@@ -34,18 +34,20 @@ const Todo = ({ todo }) => {
           className="w-[25px] h-[25px]"
         
         /> */}
-        <div className="box w-[25px] h-[25px] rounded bg-transparent border-4 border-red-400">
-          {checked ? <img src={tick} alt="tick" /> : ""}
+        <div className="flex gap-3  w-fit" onClick={handleChange}>
+          <div className="box w-[25px] h-[25px] rounded bg-transparent border-4 border-red-400">
+            {checked ? <img src={tick} alt="tick" /> : ""}
+          </div>
+          <p
+            className={cl(
+              "text-black cursor-pointer",
+              checked ? "text-red-500 line-through" : "text-black no-underline "
+            )}
+          >
+            {todo.title}
+          </p>
+          <Chip title={todo.category} color={findColor.bg} />
         </div>
-        <p
-          className={cl(
-            "text-black cursor-pointer",
-            checked ? "text-red-500 line-through" : "text-black no-underline "
-          )}
-        >
-          {todo.title}
-        </p>
-        <Chip title={todo.category} color={findColor.bg} />
       </div>
     </div>
   );

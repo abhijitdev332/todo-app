@@ -4,7 +4,10 @@ import { sidebar } from "../../constants/constant.js";
 import { AiOutlineFileDone } from "react-icons/ai";
 import cl from "classnames";
 import toast from "react-hot-toast";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { usetheme } from "../../services/providers/ThemeProvider.jsx";
+import style from "./sidebar.module.scss";
+import { GiHamburgerMenu } from "react-icons/gi";
 function getRandomColor() {
   let letters = "0123456789ABCDEF";
   let color = "#";
@@ -13,14 +16,12 @@ function getRandomColor() {
   }
   return color;
 }
-const Sidebar = ({ setTodos }) => {
+const Sidebar = ({ setTodos, showSidebar, setShowSidebar }) => {
   const [theme] = usetheme();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [newCategory, setNewCategory] = useState("");
-  const inputRef = useRef(null);
-  const addCategory = (e) => {
-    e.stopPropagation();
+  const addCategory = () => {
     if (newCategory.trim("") !== "") {
       sidebar.push({
         id: Math.floor(Math.random() * 100),
@@ -53,21 +54,51 @@ const Sidebar = ({ setTodos }) => {
       inputRef.current.focus();
     }
   }, [showInput]);
+  const handleHamClick = () => {};
+  const handleClose = () => {
+    setShowSidebar(false);
+  };
+  useEffect(() => {
+    if (selectedCategory !== "") {
+      setShowSidebar(false);
+    }
+  }, [selectedCategory]);
   return (
     <>
       <aside
-        className={cl(theme ? "bg-slate-200" : "bg-slate-800", "p-10 h-screen")}
-        onClick={() => {
-          if (showInput) {
-            setShowInput(false);
-          }
-        }}
+        className={cl(
+          theme ? "bg-slate-200" : "bg-slate-800",
+          "p-6",
+          style.sidebar,
+          showSidebar ? "left-0" : "-left-[100%]",
+          "md:left-0"
+        )}
+        // onClick={() => {
+        //   if (showInput) {
+        //     setShowInput(false);
+        //   }
+        // }}
       >
-        <div className="container mx-auto px-8">
-          <div className="flex flex-col">
+        <button
+          className={cl(style.closeBtn, "md:hidden hover:text-green-400")}
+        >
+          <IoIosCloseCircleOutline
+            fontSize={"2rem"}
+            color="inherit"
+            onClick={handleClose}
+          />
+        </button>
+        <div
+          className={cl(
+            "container mx-auto px-8 h-[80%] flex justify-center",
+            style.hide__scroll
+          )}
+        >
+          <div className="flex flex-col relative h-fit">
             <div
               className="font-bold lg:text-xl text-lg font-serif cursor-pointer hover:text-green-400 transition-all"
               onClick={() => {
+                setShowSidebar(false);
                 setSelectedCategory("");
               }}
             >
@@ -94,34 +125,8 @@ const Sidebar = ({ setTodos }) => {
                   </li>
                 );
               })}
-              <div className={cl("gap-3", showInput ? "flex" : "hidden")}>
-                <input
-                  type="text"
-                  className="bg-transparent p-2 outline-none rounded-md border-2 border-slate-900"
-                  value={newCategory}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    setNewCategory(e.target.value);
-                  }}
-                  ref={inputRef}
-                />
-                <button
-                  className="bg-green-500 px-3 py-2 text-center rounded-md cursor-pointer"
-                  onClick={addCategory}
-                >
-                  Add
-                </button>
-              </div>
             </ul>
-            <div className="flex flex-col gap-5">
-              <button
-                className="flex gap-3 text-slate-700 items-center hover:text-green-400 transition-all w-full"
-                onClick={() => {
-                  setShowInput(!showInput);
-                }}
-              >
-                <FaPlus /> <span>New Category</span>
-              </button>
+            {/* <div className="flex flex-col gap-5">
               <button
                 className="flex gap-3 text-slate-700 items-center hover:text-green-400 transition-all w-full"
                 onClick={() => {
@@ -130,7 +135,30 @@ const Sidebar = ({ setTodos }) => {
               >
                 <AiOutlineFileDone /> <span>Completed Task</span>
               </button>
-            </div>
+            </div> */}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 bottom-10 left-0  mx-auto  ">
+          <input
+            type="text"
+            className="bg-transparent p-2 outline-none rounded-md border-2 border-slate-900"
+            value={newCategory}
+            onChange={(e) => {
+              setNewCategory(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                addCategory();
+              }
+            }}
+          />
+          <div>
+            <button
+              className="bg-green-500 px-3 w-full py-2 text-center rounded-md cursor-pointer"
+              onClick={addCategory}
+            >
+              Add
+            </button>
           </div>
         </div>
       </aside>

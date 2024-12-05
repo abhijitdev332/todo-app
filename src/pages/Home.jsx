@@ -6,6 +6,12 @@ import toast, { Toaster } from "react-hot-toast";
 import cl from "classnames";
 import { IoClose } from "react-icons/io5";
 import { usetheme } from "../services/providers/ThemeProvider";
+import { GiHamburgerMenu } from "react-icons/gi";
+
+// styles
+import style from "./home.module.scss";
+import { ScrollRestoration } from "react-router-dom";
+
 let object = JSON.parse(localStorage.getItem("todos")) ?? [];
 const Home = () => {
   const [theme] = usetheme();
@@ -15,6 +21,7 @@ const Home = () => {
   const [taskCategory, setTaskCategory] = useState("work");
   const [search, SetSearch] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [showSidebar, setShowSidebar] = useState(false);
   const handleModalShow = () => {
     setModalShow(!modalShow);
     setnewTask("");
@@ -36,7 +43,7 @@ const Home = () => {
               id: id,
               title: newTask,
               createdAt: date.toLocaleDateString(),
-              status: "completed",
+              status: "pending",
               category: taskCategory,
             },
           ])
@@ -47,7 +54,7 @@ const Home = () => {
             id: id,
             title: newTask,
             createdAt: date.toLocaleDateString(),
-            status: "completed",
+            status: "pending",
             category: taskCategory,
           },
         ];
@@ -77,31 +84,44 @@ const Home = () => {
     });
   };
   // effects
-
+  const handleHamClick = () => {
+    setShowSidebar(true);
+  };
   return (
     <>
-      <div className="wrapper h-screen overflow-y-hidden">
-        <Header />
-        <main className="main">
-          <div className="lg-container">
-            <div className="flex">
-              <Sidebar setTodos={setTodos} />
-              <div
-                className={cl(
-                  theme ? "bg-white" : "bg-slate-900",
-                  "w-full p-10"
-                )}
-              >
-                <div className="w-8/12 flex flex-col gap-5">
-                  <h2 className="font-bold text-3xl text-black">All Tasks</h2>
+      <ScrollRestoration />
+      <div className={cl(theme ? "bg-white" : "bg-slate-900")}>
+        <Header setTodos={setTodos} />
+        <div className="lg:container lg:mx-auto">
+          <main className={style.main}>
+            <div className="flex h-full">
+              <div className={cl("m-5 h-[30px]", style.ham)}>
+                <GiHamburgerMenu fontSize={"1.4rem"} onClick={handleHamClick} />
+              </div>
+              <Sidebar
+                setTodos={setTodos}
+                showSidebar={showSidebar}
+                setShowSidebar={setShowSidebar}
+              />
+              <div className={cl(" bg-inherit w-full h-full p-3 md:p-10")}>
+                <div className="md:w-8/12 flex flex-col gap-5 w-full">
+                  <h2 className="font-bold text-3xl text-black text-center md:text-start py-5">
+                    <span
+                      onClick={() => {
+                        setTodos(object);
+                      }}
+                    >
+                      All Tasks
+                    </span>
+                  </h2>
                   <input
                     type="text"
                     placeholder="Start Searching..."
-                    className="bg-slate-200 py-2 px-1 rounded outline-none w-fit"
+                    className="bg-slate-200 py-2 px-1 rounded outline-none w-full md:w-fit"
                     value={search}
                     onChange={inputChange}
                   />
-                  <div className="flex justify-start">
+                  <div className="flex md:justify-start justify-center">
                     <button
                       className="p-3 bg-green-400 rounded-md font-semibold text-lg"
                       onClick={handleModalShow}
@@ -109,12 +129,14 @@ const Home = () => {
                       Add Task
                     </button>
                   </div>
-                  <TodoList todos={todos} />
+                  <div className={cl(style.list__wrapper)}>
+                    <TodoList todos={todos} />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
       <div
         className={cl(
