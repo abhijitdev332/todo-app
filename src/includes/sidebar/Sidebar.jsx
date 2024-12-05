@@ -63,7 +63,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
         className={cl(
           "p-6 bg-inherit",
           style.sidebar,
-          showSidebar ? "left-0" : "-left-[100%]",
+          showSidebar ? "left-0 bg-white" : "-left-[100%] bg-white",
           "md:left-0"
         )}
       >

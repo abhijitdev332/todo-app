@@ -6,7 +6,6 @@ import { MdErrorOutline } from "react-icons/md";
 import { useTodos } from "../../services/store/Store";
 const TodoList = () => {
   const [todos] = useTodos();
-  console.log(todos);
   return (
     <div className="wrapper">
       <div className="py-4">

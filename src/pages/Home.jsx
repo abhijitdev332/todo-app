@@ -13,7 +13,7 @@ import style from "./home.module.scss";
 import { ScrollRestoration } from "react-router-dom";
 const Home = () => {
   const [theme] = usetheme();
-  const [_, setTodos] = useTodos();
+  const [todos, setTodos] = useTodos();
   const [modalShow, setModalShow] = useState(false);
   const [newTask, setnewTask] = useState("");
   const [taskCategory, setTaskCategory] = useState("work");
@@ -57,6 +57,23 @@ const Home = () => {
     setShowSidebar(true);
   };
 
+  useEffect(() => {
+    const object = JSON.parse(localStorage.getItem("todos")) ?? [];
+    if (search.trim() == "") {
+      return setTodos(object?.filter((ele) => ele?.status !== "completed"));
+    } else if (
+      search.trim() == "" &&
+      todos?.every((ele) => ele?.status == "completed")
+    ) {
+      return setTodos(object?.filter((ele) => ele?.status == "completed"));
+    }
+    setTodos((prev) =>
+      prev?.filter((ele) => {
+        const regex = new RegExp(search, "gi");
+        return ele?.title?.match(regex);
+      })
+    );
+  }, [search]);
   return (
     <>
       <ScrollRestoration />
