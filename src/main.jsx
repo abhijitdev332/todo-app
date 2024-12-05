@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App.jsx";
 
 import ThemeProvider from "./services/providers/ThemeProvider.jsx";
+import StoreProvider from "./services/store/Store.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
-      <App />
+      <StoreProvider>
+        <App />
+      </StoreProvider>
     </ThemeProvider>
   </StrictMode>
 );

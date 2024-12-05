@@ -1,16 +1,23 @@
 import React from "react";
 import { Todo } from "../component";
 import cl from "classnames";
-import style from "./style.module.scss";
-const TodoList = ({ todos }) => {
+import { MdErrorOutline } from "react-icons/md";
+
+import { useTodos } from "../../services/store/Store";
+const TodoList = () => {
+  const [todos] = useTodos();
+  console.log(todos);
   return (
     <div className="wrapper">
       <div className="py-4">
-        <div className={cl("flex flex-col gap-3")}>
+        <div className={cl("flex gap-4 flex-wrap")}>
           {todos?.length > 0 ? (
             todos.map((ele, i) => <Todo todo={ele} key={i + 1} />)
           ) : (
-            <p>no todos in here</p>
+            <div className="p-3 bg-slate-300 rounded flex gap-2 items-center">
+              <MdErrorOutline fontSize={"1.3rem"} color="red" />
+              <span>no todos in here</span>
+            </div>
           )}
         </div>
       </div>

@@ -8,6 +8,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { usetheme } from "../../services/providers/ThemeProvider.jsx";
 import style from "./sidebar.module.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useTodos } from "../../services/store/Store.jsx";
 function getRandomColor() {
   let letters = "0123456789ABCDEF";
   let color = "#";
@@ -16,10 +17,10 @@ function getRandomColor() {
   }
   return color;
 }
-const Sidebar = ({ setTodos, showSidebar, setShowSidebar }) => {
+const Sidebar = ({ showSidebar, setShowSidebar }) => {
+  const [_, setTodos] = useTodos();
   const [theme] = usetheme();
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [showInput, setShowInput] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const addCategory = () => {
     if (newCategory.trim("") !== "") {
@@ -29,7 +30,7 @@ const Sidebar = ({ setTodos, showSidebar, setShowSidebar }) => {
         link: newCategory,
         bg: getRandomColor(),
       });
-      setShowInput(false);
+
       setNewCategory("");
       localStorage.setItem("sidebar", JSON.stringify(sidebar));
     } else {
@@ -38,23 +39,16 @@ const Sidebar = ({ setTodos, showSidebar, setShowSidebar }) => {
   };
   useEffect(() => {
     if (selectedCategory == "") {
-      return setTodos(JSON.parse(localStorage.getItem("todos")) ?? []);
-    } else if (selectedCategory == "completed") {
-      let object = JSON.parse(localStorage.getItem("todos")) ?? [];
-      return setTodos(object?.filter((ele) => ele.status == "completed"));
+      let data = JSON.parse(localStorage.getItem("todos")) ?? [];
+      return setTodos(data?.filter((ele) => ele?.status !== "completed"));
+    } else {
+      setTodos(
+        JSON.parse(localStorage.getItem("todos"))?.filter(
+          (ele) => ele.category.toLowerCase() == selectedCategory?.toLowerCase()
+        )
+      );
     }
-    setTodos(
-      JSON.parse(localStorage.getItem("todos"))?.filter(
-        (ele) => ele.category.toLowerCase() == selectedCategory?.toLowerCase()
-      )
-    );
   }, [selectedCategory]);
-  useEffect(() => {
-    if (showInput) {
-      inputRef.current.focus();
-    }
-  }, [showInput]);
-  const handleHamClick = () => {};
   const handleClose = () => {
     setShowSidebar(false);
   };
@@ -67,17 +61,11 @@ const Sidebar = ({ setTodos, showSidebar, setShowSidebar }) => {
     <>
       <aside
         className={cl(
-          theme ? "bg-slate-200" : "bg-slate-800",
-          "p-6",
+          "p-6 bg-inherit",
           style.sidebar,
           showSidebar ? "left-0" : "-left-[100%]",
           "md:left-0"
         )}
-        // onClick={() => {
-        //   if (showInput) {
-        //     setShowInput(false);
-        //   }
-        // }}
       >
         <button
           className={cl(style.closeBtn, "md:hidden hover:text-green-400")}
@@ -99,7 +87,8 @@ const Sidebar = ({ setTodos, showSidebar, setShowSidebar }) => {
               className="font-bold lg:text-xl text-lg font-serif cursor-pointer hover:text-green-400 transition-all"
               onClick={() => {
                 setShowSidebar(false);
-                setSelectedCategory("");
+                let data = JSON.parse(localStorage.getItem("todos")) ?? [];
+                setTodos(data?.filter((ele) => ele?.status !== "completed"));
               }}
             >
               All tasks

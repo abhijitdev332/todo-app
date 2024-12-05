@@ -6,27 +6,25 @@ import { useNavigate } from "react-router-dom";
 import { usetheme } from "../../services/providers/ThemeProvider";
 import useUserHook from "../../hooks/UserHook";
 import { AiOutlineFileDone } from "react-icons/ai";
-
+import { useTodos } from "../../services/store/Store";
 // styles
 import style from "./header.module.scss";
-const object = JSON.parse(localStorage.getItem("todos"));
-const Header = ({ setTodos }) => {
+const Header = () => {
+  const [_, setTodos] = useTodos();
   const navigate = useNavigate();
   const { user, session } = useUserHook();
   const [theme, changetheme] = usetheme();
-
+  // handle logout
   const handleLogout = () => {
     // clear the session
     localStorage.removeItem("session");
     // navigate to auth page
     navigate("/", { replace: true });
   };
-  const handleHamClick = () => {
-    console.log("hamc lick");
-  };
+  // task complete click
   const handleCompleteClick = () => {
-    let object = JSON.parse(localStorage.getItem("todos")) ?? [];
-    return setTodos(object?.filter((ele) => ele.status == "completed"));
+    const object = JSON.parse(localStorage.getItem("todos")) ?? [];
+    setTodos(object?.filter((ele) => ele.status == "completed"));
   };
   return (
     <>
@@ -43,7 +41,11 @@ const Header = ({ setTodos }) => {
               <div className="logo font-bold sm:text-2xl">
                 <span
                   onClick={() => {
-                    setTodos(object);
+                    const object =
+                      JSON.parse(localStorage.getItem("todos")) ?? [];
+                    setTodos(
+                      object?.filter((ele) => ele?.status !== "completed")
+                    );
                   }}
                 >
                   Todo <span className="inline-block text-green-500">A</span>pp
@@ -61,6 +63,7 @@ const Header = ({ setTodos }) => {
                   onClick={handleCompleteClick}
                 >
                   <AiOutlineFileDone fontSize={"1.6rem"} />
+                  <span>Completed</span>
                 </button>
 
                 <button onClick={changetheme} className="px-5">

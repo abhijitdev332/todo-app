@@ -1,12 +1,10 @@
 import { lazy, Suspense } from "react";
-
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from "react-router-dom";
-import styles from "./app.module.scss";
 const Home = lazy(() => import("./pages/Home"));
 const Auth = lazy(() => import("./pages/Auth"));
 import ErrorPage from "./pages/ErrorPage";
@@ -25,6 +23,7 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/"
         element={
@@ -36,6 +35,7 @@ const router = createBrowserRouter(
         <Route index element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
+      <Route path="*/" />
     </Route>
   )
 );

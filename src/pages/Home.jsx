@@ -7,20 +7,17 @@ import cl from "classnames";
 import { IoClose } from "react-icons/io5";
 import { usetheme } from "../services/providers/ThemeProvider";
 import { GiHamburgerMenu } from "react-icons/gi";
-
+import { useTodos } from "../services/store/Store";
 // styles
 import style from "./home.module.scss";
 import { ScrollRestoration } from "react-router-dom";
-
-let object = JSON.parse(localStorage.getItem("todos")) ?? [];
 const Home = () => {
   const [theme] = usetheme();
-  const [todos, setTodos] = useState(object.length > 0 ? object : []);
+  const [_, setTodos] = useTodos();
   const [modalShow, setModalShow] = useState(false);
   const [newTask, setnewTask] = useState("");
   const [taskCategory, setTaskCategory] = useState("work");
   const [search, SetSearch] = useState("");
-  const [isPending, startTransition] = useTransition();
   const [showSidebar, setShowSidebar] = useState(false);
   const handleModalShow = () => {
     setModalShow(!modalShow);
@@ -34,31 +31,17 @@ const Home = () => {
     let date = new Date();
     let id = Math.floor(Math.random() * 100);
     if (newTask.trim() !== "" && taskCategory !== "") {
-      setTodos((prev = []) => {
-        localStorage.setItem(
-          "todos",
-          JSON.stringify([
-            ...prev,
-            {
-              id: id,
-              title: newTask,
-              createdAt: date.toLocaleDateString(),
-              status: "pending",
-              category: taskCategory,
-            },
-          ])
-        );
-        return [
-          ...prev,
-          {
-            id: id,
-            title: newTask,
-            createdAt: date.toLocaleDateString(),
-            status: "pending",
-            category: taskCategory,
-          },
-        ];
-      });
+      let data = JSON.parse(localStorage.getItem("todos")) ?? [];
+      let newData = {
+        id: id,
+        title: newTask,
+        createdAt: date.toLocaleDateString(),
+        status: "pending",
+        category: taskCategory,
+      };
+      localStorage.setItem("todos", JSON.stringify([...data, newData]));
+      data = JSON.parse(localStorage.getItem("todos")) ?? [];
+      setTodos(data?.filter((ele) => ele?.status !== "completed"));
       setModalShow(!modalShow);
       setnewTask("");
       setTaskCategory("");
@@ -68,30 +51,17 @@ const Home = () => {
       });
     }
   };
-  const inputChange = (ev) => {
-    if (ev.target.value == "") {
-      SetSearch("");
-      return setTodos(JSON.parse(localStorage.getItem("todos")));
-    }
-    startTransition(() => {
-      SetSearch(ev.target.value);
-      setTodos((prev) =>
-        prev?.filter((ele) => {
-          const regex = new RegExp(search, "gi");
-          return ele?.title?.match(regex);
-        })
-      );
-    });
-  };
+
   // effects
   const handleHamClick = () => {
     setShowSidebar(true);
   };
+
   return (
     <>
       <ScrollRestoration />
       <div className={cl(theme ? "bg-white" : "bg-slate-900")}>
-        <Header setTodos={setTodos} />
+        <Header />
         <div className="lg:container lg:mx-auto">
           <main className={style.main}>
             <div className="flex h-full">
@@ -99,27 +69,20 @@ const Home = () => {
                 <GiHamburgerMenu fontSize={"1.4rem"} onClick={handleHamClick} />
               </div>
               <Sidebar
-                setTodos={setTodos}
                 showSidebar={showSidebar}
                 setShowSidebar={setShowSidebar}
               />
               <div className={cl(" bg-inherit w-full h-full p-3 md:p-10")}>
-                <div className="md:w-8/12 flex flex-col gap-5 w-full">
+                <div className="flex flex-col gap-5 w-full">
                   <h2 className="font-bold text-3xl text-black text-center md:text-start py-5">
-                    <span
-                      onClick={() => {
-                        setTodos(object);
-                      }}
-                    >
-                      All Tasks
-                    </span>
+                    Tasks
                   </h2>
                   <input
                     type="text"
                     placeholder="Start Searching..."
                     className="bg-slate-200 py-2 px-1 rounded outline-none w-full md:w-fit"
                     value={search}
-                    onChange={inputChange}
+                    onChange={(e) => SetSearch(e.target.value)}
                   />
                   <div className="flex md:justify-start justify-center">
                     <button
@@ -130,7 +93,7 @@ const Home = () => {
                     </button>
                   </div>
                   <div className={cl(style.list__wrapper)}>
-                    <TodoList todos={todos} />
+                    <TodoList />
                   </div>
                 </div>
               </div>
