@@ -25,6 +25,9 @@ const Todo = ({ todo }) => {
     setTodos(updateData.filter((ele) => ele.status !== "completed"));
   };
   const handleChange = () => {
+    if (checked) {
+      return;
+    }
     setChecked(!checked);
     removeFromList();
     // update ite to localstorage
@@ -40,7 +43,7 @@ const Todo = ({ todo }) => {
   }, [todo]);
   return (
     <div className="w-fit">
-      <div className="flex flex-col gap-1 rounded-md bg-slate-300 p-6">
+      <div className="flex flex-col gap-1 rounded-md bg-slate-300  p-3 sm:p-6">
         {/* <input
           type="checkbox"
           // checked={todo.status == "completed" ? true : ""}
@@ -68,7 +71,11 @@ const Todo = ({ todo }) => {
             className="bg-red-300 p-3 rounded flex justify-center cursor-pointer"
             onClick={handleDelete}
           >
-            <MdDeleteForever fontSize={"1.3rem"} color="red" />
+            <MdDeleteForever
+              fontSize={"1.3rem"}
+              color="red"
+              className="hover:scale-125 transition-all"
+            />
           </button>
         ) : null}
       </div>

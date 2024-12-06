@@ -33,7 +33,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="flex flex-col gap-3 md:gap-7  py-7 px-5 max-w-prose">
+    <div className="flex flex-col px-3 py-2  max-w-prose">
       <h2 className="flex items-center justify-center gap-2 text-black font-bold font-serif ">
         <span>Welcome Back</span>
         <span>
@@ -43,13 +43,13 @@ const Login = () => {
       <p className="font-semibold font-serif text-center md:px-3">
         Today is a new day. It's your day.You shape it.
       </p>
-      <p className="font-semibold font-serif text-center md:px-3">
+      <p className="font-semibold font-serif text-center py-3 md:px-3">
         Sign in to start managing your Todos
       </p>
 
       <label
         htmlFor=""
-        className="flex flex-col justify-start font-serif lg:w-8/12 lg:mx-auto"
+        className="flex flex-col justify-start font-serif py-2 lg:w-8/12 lg:mx-auto"
       >
         Email:
         <input
@@ -68,7 +68,7 @@ const Login = () => {
       </label>
       <label
         htmlFor=""
-        className="flex flex-col justify-start font-serif lg:w-8/12 lg:mx-auto"
+        className="flex flex-col justify-start font-serif py-2 lg:w-8/12 lg:mx-auto"
       >
         Password:
         <input

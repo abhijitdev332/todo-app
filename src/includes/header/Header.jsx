@@ -40,6 +40,7 @@ const Header = () => {
             <div className="basis-1/3">
               <div className="logo font-bold sm:text-2xl">
                 <span
+                  className="cursor-pointer"
                   onClick={() => {
                     const object =
                       JSON.parse(localStorage.getItem("todos")) ?? [];

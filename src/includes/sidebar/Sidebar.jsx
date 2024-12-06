@@ -61,10 +61,11 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
     <>
       <aside
         className={cl(
-          "p-6 bg-inherit",
+          "p-6 bg-inherit lg:container lg:mx-auto",
           style.sidebar,
-          showSidebar ? "left-0 bg-white" : "-left-[100%] bg-white",
-          "md:left-0"
+          showSidebar ? "left-0" : "-left-[100%]",
+          "md:left-0",
+          !theme ? "bg-slate-500" : "bg-white"
         )}
       >
         <button

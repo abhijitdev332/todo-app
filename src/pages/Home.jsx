@@ -79,7 +79,7 @@ const Home = () => {
       <ScrollRestoration />
       <div className={cl(theme ? "bg-white" : "bg-slate-900")}>
         <Header />
-        <div className="lg:container lg:mx-auto">
+        <div className="wrapper">
           <main className={style.main}>
             <div className="flex h-full">
               <div className={cl("m-5 h-[30px]", style.ham)}>
