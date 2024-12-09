@@ -8,7 +8,7 @@ import useUserHook from "../../hooks/UserHook";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { useTodos } from "../../services/store/Store";
 // styles
-import style from "./header.module.scss";
+
 const Header = () => {
   const [_, setTodos] = useTodos();
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Header = () => {
   // handle logout
   const handleLogout = () => {
     // clear the session
-    localStorage.removeItem("session");
+    sessionStorage.removeItem("session");
     // navigate to auth page
     navigate("/", { replace: true });
   };

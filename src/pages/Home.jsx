@@ -1,37 +1,39 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useState } from "react";
 import { Header, Sidebar } from "../includes/includes";
 import { TodoList } from "../components/component";
 import { sidebar } from "../constants/constant";
 import toast, { Toaster } from "react-hot-toast";
-import cl from "classnames";
+import { ScrollRestoration } from "react-router-dom";
+import useSetTodos from "../hooks/UseSetTodos";
+import SearchInput from "../components/searchInput/SearchInput";
 import { IoClose } from "react-icons/io5";
 import { usetheme } from "../services/providers/ThemeProvider";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useTodos } from "../services/store/Store";
 // styles
 import style from "./home.module.scss";
-import { ScrollRestoration } from "react-router-dom";
+import cl from "classnames";
+import { useTodos } from "../services/store/Store";
+
 const Home = () => {
   const [theme] = usetheme();
-  const [todos, setTodos] = useTodos();
+  const [_, setTodos] = useTodos();
   const [modalShow, setModalShow] = useState(false);
   const [newTask, setnewTask] = useState("");
   const [taskCategory, setTaskCategory] = useState("work");
-  const [search, SetSearch] = useState("");
   const [showSidebar, setShowSidebar] = useState(false);
   const handleModalShow = () => {
     setModalShow(!modalShow);
     setnewTask("");
     setTaskCategory("work");
   };
-  const handleChange = (e) => {
-    setnewTask(e.target.value);
-  };
+  // const handleChange = (e) => {
+  //   setnewTask(e.target.value);
+  // };
   const handleTaskAdd = () => {
     let date = new Date();
     let id = Math.floor(Math.random() * 100);
+    let data = JSON.parse(localStorage.getItem("todos")) ?? [];
     if (newTask.trim() !== "" && taskCategory !== "") {
-      let data = JSON.parse(localStorage.getItem("todos")) ?? [];
       let newData = {
         id: id,
         title: newTask,
@@ -41,6 +43,7 @@ const Home = () => {
       };
       localStorage.setItem("todos", JSON.stringify([...data, newData]));
       data = JSON.parse(localStorage.getItem("todos")) ?? [];
+      // setter();
       setTodos(data?.filter((ele) => ele?.status !== "completed"));
       setModalShow(!modalShow);
       setnewTask("");
@@ -52,28 +55,10 @@ const Home = () => {
     }
   };
 
-  // effects
   const handleHamClick = () => {
     setShowSidebar(true);
   };
 
-  useEffect(() => {
-    const object = JSON.parse(localStorage.getItem("todos")) ?? [];
-    if (search.trim() == "") {
-      return setTodos(object?.filter((ele) => ele?.status !== "completed"));
-    } else if (
-      search.trim() == "" &&
-      todos?.every((ele) => ele?.status == "completed")
-    ) {
-      return setTodos(object?.filter((ele) => ele?.status == "completed"));
-    }
-    setTodos((prev) =>
-      prev?.filter((ele) => {
-        const regex = new RegExp(search, "gi");
-        return ele?.title?.match(regex);
-      })
-    );
-  }, [search]);
   return (
     <>
       <ScrollRestoration />
@@ -91,16 +76,7 @@ const Home = () => {
               />
               <div className={cl(" bg-inherit w-full h-full p-3 md:p-10")}>
                 <div className="flex flex-col gap-5 w-full">
-                  <h2 className="font-bold text-3xl text-black text-center md:text-start py-5">
-                    Tasks
-                  </h2>
-                  <input
-                    type="text"
-                    placeholder="Start Searching..."
-                    className="bg-slate-200 py-2 px-1 rounded outline-none w-full md:w-fit"
-                    value={search}
-                    onChange={(e) => SetSearch(e.target.value)}
-                  />
+                  <SearchInput />
                   <div className="flex md:justify-start justify-center">
                     <button
                       className="p-3 bg-green-400 rounded-md font-semibold text-lg"
@@ -138,7 +114,9 @@ const Home = () => {
               placeholder="Enter Task"
               className="bg-transparent outline-none border-2 text-white border-white p-2 rounded-md"
               value={newTask}
-              onChange={handleChange}
+              onChange={(e) => {
+                setnewTask(e.target.value);
+              }}
             />
             <select
               className="bg-slate-300 w-full p-3 rounded-md outline-none capitalize"

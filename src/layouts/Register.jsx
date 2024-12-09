@@ -18,7 +18,7 @@ const Register = () => {
     }
     // set user in localstorage and redirect to todo page
     localStorage.setItem("user", JSON.stringify(inputState));
-    localStorage.setItem("session", "active");
+    sessionStorage.setItem("session", "active");
     navigate("/home");
   };
   return (

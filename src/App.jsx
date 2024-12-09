@@ -5,9 +5,12 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+// lazy loads
 const Home = lazy(() => import("./pages/Home"));
 const Auth = lazy(() => import("./pages/Auth"));
-import ErrorPage from "./pages/ErrorPage";
+const ErrorPage = lazy(() => import("./pages/ErrorPage.jsx"));
+
+// layouts components
 import { Login, Register } from "./layouts/layout.js";
 import { UserProtected, ProtectedRoute } from "./utils/ProtectedRoute.jsx";
 import { Loader } from "./includes/includes.js";
@@ -35,7 +38,7 @@ const router = createBrowserRouter(
         <Route index element={<Login />} />
         <Route path="register" element={<Register />} />
       </Route>
-      <Route path="*/" />
+      <Route path="*/" element={<ErrorPage />} />
     </Route>
   )
 );

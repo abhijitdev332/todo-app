@@ -26,7 +26,7 @@ const Login = () => {
       user?.email == inputState.email &&
       user?.password == inputState.password
     ) {
-      localStorage.setItem("session", "active");
+      sessionStorage.setItem("session", "active");
       return navigate("/home");
     } else {
       toast("Please enter correct credentials");
