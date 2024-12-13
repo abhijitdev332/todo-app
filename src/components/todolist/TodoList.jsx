@@ -2,7 +2,6 @@ import React from "react";
 import { Todo } from "../component";
 import cl from "classnames";
 import { MdErrorOutline } from "react-icons/md";
-
 import { useTodos } from "../../services/store/Store";
 const TodoList = () => {
   const [todos] = useTodos();

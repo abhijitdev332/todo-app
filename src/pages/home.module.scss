@@ -1,4 +1,4 @@
-@import "../sass/responsive.scss";
+@use "../sass/responsive" as *;
 
 .ham {
   display: block;
