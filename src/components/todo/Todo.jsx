@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Chip from "../chip/Chip";
 import { sidebar } from "../../constants/constant";
 import tick from "../../assets/svgs/Vector.svg";
@@ -12,7 +12,7 @@ const Todo = ({ todo }) => {
   );
   const findColor = useMemo(() => {
     return sidebar.find((ele) => ele.title == todo?.category);
-  }, [todo]);
+  }, [todo, checked]);
   const removeFromList = () => {
     let data = JSON.parse(localStorage.getItem("todos"));
     let index = data?.findIndex((ele) => ele?.id == todo?.id);
@@ -22,7 +22,7 @@ const Todo = ({ todo }) => {
     });
     // set item to localstroage
     localStorage.setItem("todos", JSON.stringify(updateData));
-    setTodos(updateData.filter((ele) => ele.status !== "completed"));
+    setTodos([...updateData.filter((ele) => ele.status !== "completed")]);
   };
   const handleChange = () => {
     if (checked) {
@@ -63,7 +63,7 @@ const Todo = ({ todo }) => {
           >
             {todo.title}
           </p>
-          <Chip title={todo.category} color={findColor?.bg} />
+          <Chip title={todo.category} color={findColor?.bg ?? "orange"} />
         </div>
         <p className="text-sm font-semibold">Created-{todo?.createdAt}</p>
         {checked ? (

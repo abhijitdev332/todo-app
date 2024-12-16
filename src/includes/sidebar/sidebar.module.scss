@@ -1,4 +1,4 @@
-@import "../../sass/responsive.scss";
+@use "../../sass/responsive.scss" as *;
 
 .sidebar {
   position: absolute;
@@ -31,4 +31,13 @@
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.listItem {
+  transition: 0.4s ease-in;
+  &:hover > button {
+    &:last-child {
+      visibility: visible !important;
+    }
+  }
 }

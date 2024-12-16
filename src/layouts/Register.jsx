@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import hand from "../assets/icons/hand.png";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import bycrpt from "bcryptjs";
 const Register = () => {
   const navigate = useNavigate();
   const [inputState, setInputState] = useState({
@@ -16,26 +17,43 @@ const Register = () => {
         return;
       }
     }
+    if (inputState.password?.length < 5) {
+      toast.error("Please enter password atleast 5 charchters");
+      return;
+    }
+    let salt = bycrpt.genSaltSync(10);
+    let hashPassword = bycrpt.hashSync(inputState.password, salt);
+    let storeData = { ...inputState };
+    // delete original password from object
+    delete storeData.password;
+    // encrypt the password
+
     // set user in localstorage and redirect to todo page
-    localStorage.setItem("user", JSON.stringify(inputState));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ ...storeData, password: hashPassword })
+    );
+    // set todos as new user sign in
+    localStorage.setItem("todos", "[]");
+    // set session active
     sessionStorage.setItem("session", "active");
     navigate("/home");
   };
   return (
-    <div className="flex flex-col gap-3 md:gap-7  py-7 px-5 max-w-prose">
-      <h2 className="flex items-center justify-center gap-2 text-black font-bold font-serif ">
+    <div className="flex flex-col gap-1  py-7 px-5 max-w-prose">
+      <h2 className="flex items-center justify-center gap-2 text-black font-bold font-serif py-2 ">
         <span>Welcome</span>
         <span>
           <img src={hand} alt="handwave" className="w-[20px] h-[20px]" />
         </span>
       </h2>
-      <p className="font-semibold font-serif text-center md:px-3">
+      <p className="font-semibold font-serif text-center">
         Today is a new day. It's your day.You shape it.
       </p>
       <p className="font-semibold font-serif text-center md:px-3">
         Sign up to start managing your Todos
       </p>
-      <div className="flex wrapper flex-col gap-3 mx-auto w-full ">
+      <div className="flex wrapper flex-col gap-3 py-3 mx-auto w-full ">
         <label
           htmlFor=""
           className="flex flex-col justify-start font-serif lg:w-8/12 lg:mx-auto"
@@ -101,8 +119,8 @@ const Register = () => {
           Sign up
         </button>
       </div>
-      <p className="font-sans text-center">
-        have an account?
+      <p className="font-sans text-center font-semibold">
+        Have an account?
         <Link to={"/"} className="text-blue-600">
           Sign in
         </Link>

@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
 import { sidebar } from "../../constants/constant.js";
-import { AiOutlineFileDone } from "react-icons/ai";
 import cl from "classnames";
+import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { usetheme } from "../../services/providers/ThemeProvider.jsx";
 import style from "./sidebar.module.scss";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { useTodos } from "../../services/store/Store.jsx";
 function getRandomColor() {
   let letters = "0123456789ABCDEF";
@@ -22,6 +20,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const [theme] = usetheme();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [newCategory, setNewCategory] = useState("");
+  const [deletedCategoryIn, SetDeletedCategory] = useState(null);
   const addCategory = () => {
     if (newCategory.trim("") !== "") {
       sidebar.push({
@@ -37,6 +36,14 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       toast.error("Please enter New Category");
     }
   };
+  const handleDeleteClick = () => {
+    sidebar?.splice(deletedCategoryIn, 1);
+    localStorage.setItem("sidebar", JSON.stringify(sidebar));
+    SetDeletedCategory(null);
+  };
+  const handleClose = () => {
+    setShowSidebar(false);
+  };
   useEffect(() => {
     if (selectedCategory == "") {
       let data = JSON.parse(localStorage.getItem("todos")) ?? [];
@@ -44,19 +51,25 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
     } else {
       setTodos(
         JSON.parse(localStorage.getItem("todos"))?.filter(
-          (ele) => ele.category.toLowerCase() == selectedCategory?.toLowerCase()
+          (ele) =>
+            ele?.category?.toLowerCase() ==
+            selectedCategory?.title?.toLowerCase()
         )
       );
     }
   }, [selectedCategory]);
-  const handleClose = () => {
-    setShowSidebar(false);
-  };
+
   useEffect(() => {
     if (selectedCategory !== "") {
       setShowSidebar(false);
     }
   }, [selectedCategory]);
+  useEffect(() => {
+    if (!deletedCategoryIn) {
+      return;
+    }
+    handleDeleteClick();
+  }, [deletedCategoryIn]);
   return (
     <>
       <aside
@@ -100,17 +113,27 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                   <li
                     key={i + 1}
                     className={cl(
-                      "p-2 hover:text-green-400 transition-all font-semibold",
-                      selectedCategory == ele.title && "text-green-400"
+                      "p-2 hover:text-green-400 transition-all font-semibold flex justify-between gap-2",
+                      selectedCategory == ele.title && "text-green-400",
+                      style.listItem
                     )}
                   >
                     <button
                       className="capitalize text-lg"
                       onClick={() => {
-                        setSelectedCategory(ele?.title);
+                        setSelectedCategory(ele);
                       }}
                     >
                       {ele.title}
+                    </button>
+
+                    <button
+                      className="invisible"
+                      onClick={() => {
+                        SetDeletedCategory(i);
+                      }}
+                    >
+                      <IoClose fontSize={"1.7rem"} />
                     </button>
                   </li>
                 );

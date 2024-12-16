@@ -37,7 +37,7 @@ const Home = () => {
       let newData = {
         id: id,
         title: newTask,
-        createdAt: date.toLocaleDateString(),
+        createdAt: date.toLocaleDateString("en-GB"),
         status: "pending",
         category: taskCategory,
       };

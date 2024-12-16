@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import hand from "../assets/icons/hand.png";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import bcrypt from "bcryptjs";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,11 +21,11 @@ const Login = () => {
     // redirect to todo page
     let user = JSON.parse(localStorage.getItem("user"));
     if (user == "" || user == undefined || user == null) {
-      toast("Please Create Sign Up first");
+      toast("Please create an account");
       return;
     } else if (
       user?.email == inputState.email &&
-      user?.password == inputState.password
+      bcrypt.compareSync(inputState.password, user?.password)
     ) {
       sessionStorage.setItem("session", "active");
       return navigate("/home");
@@ -92,7 +93,7 @@ const Login = () => {
       >
         Sign in
       </button>
-      <p className="font-sans text-center">
+      <p className="font-sans text-center font-semibold">
         Don't have an account?
         <Link to={"/register"} className="text-blue-600">
           Sign up

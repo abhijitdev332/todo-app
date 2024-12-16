@@ -1,6 +1,5 @@
 import React from "react";
-import { FaMoon, FaSun, FaRegUserCircle } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { FaMoon, FaSun } from "react-icons/fa";
 import cl from "classnames";
 import { useNavigate } from "react-router-dom";
 import { usetheme } from "../../services/providers/ThemeProvider";
@@ -30,9 +29,8 @@ const Header = () => {
     <>
       <header
         className={cl(
-          theme ? "bg-slate-600" : "bg-lime-300",
+          theme ? "bg-slate-600" : "bg-slate-300",
           "sticky top-0 z-50 h-fit"
-          // showSidebar ? "block" : "hidden"
         )}
       >
         <div className="lg:container lg:mx-auto py-5 px-3">
@@ -77,12 +75,15 @@ const Header = () => {
 
                 <div className="profile flex gap-1 sm:gap-3">
                   {/* <FaRegUserCircle fontSize={"1.5rem"} /> */}
-                  <span className=" px-1 bg-slate-400 rounded-full font-bold text-white">
+                  <span
+                    title={user?.name}
+                    className=" px-2 bg-slate-400 rounded-full font-bold text-lg text-white"
+                  >
                     {user && user?.name?.charAt(0).toUpperCase()}
                   </span>
                   <span
                     onClick={handleLogout}
-                    className="font-semibold sm:text-lg"
+                    className="font-semibold sm:text-lg cursor-pointer"
                   >
                     Logout
                   </span>
