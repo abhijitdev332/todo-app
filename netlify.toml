@@ -1,26 +1,11 @@
 
 
-[build]
-  base = "" 
+[[build]]
   publish = "dist"
   command = "npm run build"
 
-
 [[redirects]]
-  from = "/*" # Redirect all paths
-  to = "/index.html" # Serve index.html for SPA routing
+  from = "/*"
+  to = "/index.html"
   status = 200
 
-
-# Context-Specific Configuration
-[context.production]
-  command = "npm run build"
-  publish = "build"
-
-[context.deploy-preview]
-  command = "npm run build"
-  publish = "preview-build"
-
-[context.branch-deploy]
-  command = "npm run build"
-  publish = "branch-build"
