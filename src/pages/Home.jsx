@@ -4,7 +4,6 @@ import { TodoList } from "../components/component";
 import { sidebar } from "../constants/constant";
 import toast, { Toaster } from "react-hot-toast";
 import { ScrollRestoration } from "react-router-dom";
-import useSetTodos from "../hooks/UseSetTodos";
 import SearchInput from "../components/searchInput/SearchInput";
 import { IoClose } from "react-icons/io5";
 import { usetheme } from "../services/providers/ThemeProvider";
@@ -26,9 +25,6 @@ const Home = () => {
     setnewTask("");
     setTaskCategory("work");
   };
-  // const handleChange = (e) => {
-  //   setnewTask(e.target.value);
-  // };
   const handleTaskAdd = () => {
     let date = new Date();
     let id = Math.floor(Math.random() * 100);
