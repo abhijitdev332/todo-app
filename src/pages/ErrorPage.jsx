@@ -5,14 +5,30 @@ const ErrorPage = () => {
   return (
     <div className="error__wrapper">
       <div className="h-screen">
-        <div className="flex justify-center items-center h-full">
-          <div className="card bg-[#6242ff] p-4 rounded flex flex-col  justify-center">
-            <h3 className="font-semibold text-lg text-white">
-              Something Went Wrong
+        <div className="flex justify-center items-center h-full px-5">
+          <div className="card bg-[#6242ff] p-4 rounded-md flex flex-col justify-center">
+            <div
+              style={{
+                width: "100%",
+                height: 0,
+                paddingBottom: "86%",
+                position: "relative",
+              }}
+            >
+              <iframe
+                src="https://giphy.com/embed/LBPi9kAlVrYkf4bmPs"
+                width="100%"
+                height="100%"
+                style={{ position: "absolute", borderRadius: "10px" }}
+                frameBorder="0"
+                className="giphy-embed"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <h3 className="font-semibold text-lg text-white py-2">
+              Something Went Wrong!!
             </h3>
-            <p className="font-semibold  text-white">
-              Please try after sometimes
-            </p>
+            <p className="font-semibold  text-white">Please Go Back!!</p>
             <Link
               to={-1}
               replace={true}
