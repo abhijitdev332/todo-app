@@ -27,10 +27,10 @@ const Todo = ({ todo }) => {
   const handleChange = () => {
     if (checked) {
       return;
+    } else {
+      setChecked(!checked);
+      removeFromList();
     }
-    setChecked(!checked);
-    removeFromList();
-    // update ite to localstorage
   };
   const handleDelete = () => {
     setTodos(todos.filter((ele) => ele.id !== todo.id));

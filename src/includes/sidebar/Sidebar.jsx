@@ -21,8 +21,12 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [newCategory, setNewCategory] = useState("");
   const [deletedCategoryIn, SetDeletedCategory] = useState(null);
+  const todoSetter = () => {
+    let data = JSON.parse(localStorage.getItem("todos")) ?? [];
+    setTodos(data?.filter((ele) => ele?.status !== "completed"));
+  };
   const addCategory = () => {
-    if (newCategory.trim("") !== "") {
+    if (newCategory.trim("") !== "" && newCategory.length < 12) {
       sidebar.push({
         id: Math.floor(Math.random() * 100),
         title: newCategory,
@@ -33,7 +37,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       setNewCategory("");
       localStorage.setItem("sidebar", JSON.stringify(sidebar));
     } else {
-      toast.error("Please enter New Category");
+      toast.error("Please enter valid Category within 12 charcters");
     }
   };
   const handleDeleteClick = () => {
@@ -46,8 +50,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
   };
   useEffect(() => {
     if (selectedCategory == "") {
-      let data = JSON.parse(localStorage.getItem("todos")) ?? [];
-      return setTodos(data?.filter((ele) => ele?.status !== "completed"));
+      todoSetter();
     } else {
       setTodos(
         JSON.parse(localStorage.getItem("todos"))?.filter(
@@ -65,7 +68,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
     }
   }, [selectedCategory]);
   useEffect(() => {
-    if (!deletedCategoryIn) {
+    if (deletedCategoryIn == null || deletedCategoryIn == undefined) {
       return;
     }
     handleDeleteClick();
@@ -101,8 +104,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
               className="font-bold lg:text-xl text-lg font-serif cursor-pointer hover:text-green-400 transition-all"
               onClick={() => {
                 setShowSidebar(false);
-                let data = JSON.parse(localStorage.getItem("todos")) ?? [];
-                setTodos(data?.filter((ele) => ele?.status !== "completed"));
+                todoSetter();
               }}
             >
               All tasks
@@ -119,7 +121,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                     )}
                   >
                     <button
-                      className="capitalize text-lg"
+                      className="capitalize text-lg whitespace-nowrap"
                       onClick={() => {
                         setSelectedCategory(ele);
                       }}

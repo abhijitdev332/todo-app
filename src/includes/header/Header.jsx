@@ -11,7 +11,7 @@ import { useTodos } from "../../services/store/Store";
 const Header = () => {
   const [_, setTodos] = useTodos();
   const navigate = useNavigate();
-  const { user, session } = useUserHook();
+  const { user } = useUserHook();
   const [theme, changetheme] = usetheme();
   // handle logout
   const handleLogout = () => {
@@ -23,7 +23,7 @@ const Header = () => {
   // task complete click
   const handleCompleteClick = () => {
     const object = JSON.parse(localStorage.getItem("todos")) ?? [];
-    setTodos(object?.filter((ele) => ele.status == "completed"));
+    setTodos(object?.filter((ele) => ele.status == "completed")?.reverse());
   };
   return (
     <>

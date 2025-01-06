@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Header, Sidebar } from "../includes/includes";
 import { TodoList } from "../components/component";
-import { sidebar } from "../constants/constant";
 import toast, { Toaster } from "react-hot-toast";
 import { ScrollRestoration } from "react-router-dom";
 import SearchInput from "../components/searchInput/SearchInput";
@@ -12,22 +11,26 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import style from "./home.module.scss";
 import cl from "classnames";
 import { useTodos } from "../services/store/Store";
-
+const CATAGORY = JSON.parse(localStorage.getItem("sidebar"));
 const Home = () => {
   const [theme] = usetheme();
   const [_, setTodos] = useTodos();
   const [modalShow, setModalShow] = useState(false);
   const [newTask, setnewTask] = useState("");
-  const [taskCategory, setTaskCategory] = useState("work");
+  const [taskCategory, setTaskCategory] = useState(() => {
+    return CATAGORY?.length > 0 ? CATAGORY[0]?.title : "";
+  });
   const [showSidebar, setShowSidebar] = useState(false);
   const handleModalShow = () => {
     setModalShow(!modalShow);
     setnewTask("");
-    setTaskCategory("work");
+    setTaskCategory(() => {
+      return CATAGORY?.length > 0 ? CATAGORY[0]?.title : "";
+    });
   };
   const handleTaskAdd = () => {
     let date = new Date();
-    let id = Math.floor(Math.random() * 100);
+    let id = Math.floor(Math.random() * 999);
     let data = JSON.parse(localStorage.getItem("todos")) ?? [];
     if (newTask.trim() !== "" && taskCategory !== "") {
       let newData = {
@@ -45,7 +48,7 @@ const Home = () => {
       setnewTask("");
       setTaskCategory("");
     } else {
-      toast.error("Please enter a task", {
+      toast.error("Please enter valid task and Catagory", {
         duration: 2000,
       });
     }
@@ -99,10 +102,10 @@ const Home = () => {
         <div className="modal-wrapper h-full w-full flex justify-center items-center">
           <div className="form relative flex flex-col items-center gap-5 p-10 bg-[#50727B] rounded-md">
             <button
-              className="absolute top-[10px] right-[10px] border-2 border-white"
+              className="absolute top-[10px] right-[10px] p-1 border-2 rounded-full transition-transform"
               onClick={handleModalShow}
             >
-              <IoClose fontSize={"1.4rem"} />
+              <IoClose fontSize={"1.5rem"} className="hover:scale-125" />
             </button>
             <p className="font-semibold text-lg">Add New Task</p>
             <input
@@ -113,6 +116,11 @@ const Home = () => {
               onChange={(e) => {
                 setnewTask(e.target.value);
               }}
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  handleTaskAdd();
+                }
+              }}
             />
             <select
               className="bg-slate-300 w-full p-3 rounded-md outline-none capitalize"
@@ -121,7 +129,7 @@ const Home = () => {
               }}
               value={taskCategory}
             >
-              {sidebar.map((ele, i) => (
+              {CATAGORY.map((ele, i) => (
                 <option className="capitalize" key={i + 1}>
                   {ele.title}
                 </option>
