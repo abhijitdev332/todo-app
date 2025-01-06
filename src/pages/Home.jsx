@@ -11,13 +11,15 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import style from "./home.module.scss";
 import cl from "classnames";
 import { useTodos } from "../services/store/Store";
-const CATAGORY = JSON.parse(localStorage.getItem("sidebar"));
+import { sidebar } from "../constants/constant";
+
 const Home = () => {
   const [theme] = usetheme();
   const [_, setTodos] = useTodos();
   const [modalShow, setModalShow] = useState(false);
   const [newTask, setnewTask] = useState("");
   const [taskCategory, setTaskCategory] = useState(() => {
+    const CATAGORY = JSON.parse(localStorage.getItem("sidebar"));
     return CATAGORY?.length > 0 ? CATAGORY[0]?.title : "";
   });
   const [showSidebar, setShowSidebar] = useState(false);
@@ -25,6 +27,7 @@ const Home = () => {
     setModalShow(!modalShow);
     setnewTask("");
     setTaskCategory(() => {
+      const CATAGORY = JSON.parse(localStorage.getItem("sidebar"));
       return CATAGORY?.length > 0 ? CATAGORY[0]?.title : "";
     });
   };
@@ -129,7 +132,7 @@ const Home = () => {
               }}
               value={taskCategory}
             >
-              {CATAGORY.map((ele, i) => (
+              {sidebar.map((ele, i) => (
                 <option className="capitalize" key={i + 1}>
                   {ele.title}
                 </option>
