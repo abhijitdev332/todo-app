@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const UserHook = () => {
-  // get user and session from storage
+  // get from storage
   const userLocal = JSON.parse(localStorage.getItem("user")) ?? false;
   const sessionLocal = sessionStorage.getItem("session") ?? false;
 
@@ -11,7 +11,7 @@ const UserHook = () => {
   });
   // effect to check user and its session
   useEffect(() => {}, [userLocal, sessionLocal]);
-  // return user and session
+  // return user and session status
   if (userStatus?.user !== "" && userStatus?.session == "active") {
     return { user: userStatus?.user, session: userStatus?.session };
   } else {

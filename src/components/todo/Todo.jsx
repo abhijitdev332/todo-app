@@ -22,7 +22,9 @@ const Todo = ({ todo }) => {
     });
     // set item to localstroage
     localStorage.setItem("todos", JSON.stringify(updateData));
-    setTodos([...updateData.filter((ele) => ele.status !== "completed")]);
+    setTimeout(() => {
+      setTodos([...updateData.filter((ele) => ele.status !== "completed")]);
+    }, 1000);
   };
   const handleChange = () => {
     if (checked) {
@@ -42,17 +44,13 @@ const Todo = ({ todo }) => {
     setChecked(todo.status == "completed" ? true : false);
   }, [todo]);
   return (
-    <div className="w-fit">
+    <div className={cl("w-fit", checked ? "animate-pulse" : "")}>
       <div className="flex flex-col gap-1 rounded-md bg-slate-300  p-3 sm:p-6">
-        {/* <input
-          type="checkbox"
-          // checked={todo.status == "completed" ? true : ""}
-          onChange={handleChange}
-          className="w-[25px] h-[25px]"
-        
-        /> */}
-        <div className="flex gap-3 w-fit" onClick={handleChange}>
-          <div className="box w-[25px] h-[25px] rounded bg-transparent border-4 border-red-400">
+        <div className="flex gap-3 w-fit">
+          <div
+            className="box w-[25px] h-[25px] rounded bg-transparent border-4 border-red-400"
+            onClick={handleChange}
+          >
             {checked ? <img src={tick} alt="tick" /> : ""}
           </div>
           <p
@@ -66,7 +64,7 @@ const Todo = ({ todo }) => {
           <Chip title={todo.category} color={findColor?.bg ?? "orange"} />
         </div>
         <p className="text-sm font-semibold">Created-{todo?.createdAt}</p>
-        {checked ? (
+        {checked && (
           <button
             className="bg-red-300 p-3 rounded flex justify-center cursor-pointer"
             onClick={handleDelete}
@@ -77,7 +75,7 @@ const Todo = ({ todo }) => {
               className="hover:scale-125 transition-all"
             />
           </button>
-        ) : null}
+        )}
       </div>
     </div>
   );

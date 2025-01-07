@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Header, Sidebar } from "../includes/includes";
 import { TodoList } from "../components/component";
 import toast, { Toaster } from "react-hot-toast";
 import { ScrollRestoration } from "react-router-dom";
-import SearchInput from "../components/searchInput/SearchInput";
 import { IoClose } from "react-icons/io5";
 import { usetheme } from "../services/providers/ThemeProvider";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -60,7 +59,6 @@ const Home = () => {
   const handleHamClick = () => {
     setShowSidebar(true);
   };
-
   return (
     <>
       <ScrollRestoration />
@@ -78,7 +76,6 @@ const Home = () => {
               />
               <div className={cl(" bg-inherit w-full h-full p-3 md:p-10")}>
                 <div className="flex flex-col gap-5 w-full">
-                  <SearchInput />
                   <div className="flex md:justify-start justify-center">
                     <button
                       className="p-3 bg-green-400 rounded-md font-semibold text-lg"
@@ -110,7 +107,7 @@ const Home = () => {
             >
               <IoClose fontSize={"1.5rem"} className="hover:scale-125" />
             </button>
-            <p className="font-semibold text-lg">Add New Task</p>
+            <p className="font-semibold text-lg text-white">Add New Task</p>
             <input
               type="text"
               placeholder="Enter Task"
@@ -142,7 +139,7 @@ const Home = () => {
               className="bg-teal-500 p-3 w-full rounded-lg font-bold text-lg font-serif"
               onClick={handleTaskAdd}
             >
-              Add
+              Add Task
             </button>
           </div>
         </div>
