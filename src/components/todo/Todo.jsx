@@ -44,7 +44,7 @@ const Todo = ({ todo }) => {
     setChecked(todo.status == "completed" ? true : false);
   }, [todo]);
   return (
-    <div className={cl("w-fit", checked ? "animate-pulse" : "")}>
+    <div className="w-fit">
       <div className="flex flex-col gap-1 rounded-md bg-slate-300  p-3 sm:p-6">
         <div className="flex gap-3 w-fit">
           <div
