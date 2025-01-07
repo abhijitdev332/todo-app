@@ -1,21 +1,23 @@
 import React, { createContext, useContext, useState } from "react";
 
-const themeContext = createContext("");
+const ThemeContext = createContext("");
 
 const ThemeProvider = ({ children }) => {
+  // default light mode
   const [theme, setTheme] = useState(true);
+  // change theme func
   const ChangeTheme = () => {
     setTheme(!theme);
   };
   return (
     <>
-      <themeContext.Provider value={[theme, ChangeTheme]}>
+      <ThemeContext.Provider value={[theme, ChangeTheme]}>
         {children}
-      </themeContext.Provider>
+      </ThemeContext.Provider>
     </>
   );
 };
-
-export const usetheme = () => useContext(themeContext);
+// use them func for accessing them state
+export const usetheme = () => useContext(ThemeContext);
 
 export default ThemeProvider;

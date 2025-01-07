@@ -1,17 +1,19 @@
 import React, { createContext, useContext, useState } from "react";
 let object = JSON.parse(localStorage.getItem("todos")) ?? [];
-const todoContext = createContext(null);
+const TodoContext = createContext(null);
 const StoreProvider = ({ children }) => {
+  // todo state
   const [todos, setTodos] = useState(
     object.length > 0
       ? [...object.filter((ele) => ele?.status == "pending")]
       : []
   );
   return (
-    <todoContext.Provider value={[todos, setTodos]}>
+    <TodoContext.Provider value={[todos, setTodos]}>
       {children}
-    </todoContext.Provider>
+    </TodoContext.Provider>
   );
 };
 export default StoreProvider;
-export const useTodos = () => useContext(todoContext);
+// useTodos hook for using todocontext
+export const useTodos = () => useContext(TodoContext);

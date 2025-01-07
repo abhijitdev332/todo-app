@@ -10,17 +10,21 @@ const Register = () => {
     email: "",
     password: "",
   });
+  // handle signup func with validation
   const handleSignUp = () => {
+    // check if any fleid is empty
     for (let ele in inputState) {
       if (inputState[ele].trim() == "") {
         toast.error(`Please enter ${ele} field`);
         return;
       }
     }
+    // check if passwprd length is less than 5
     if (inputState.password?.length < 5) {
       toast.error("Please enter password atleast 5 charchters");
       return;
     }
+    // create a encrypt password with bycrypt
     let salt = bycrpt.genSaltSync(10);
     let hashPassword = bycrpt.hashSync(inputState.password, salt);
     let storeData = { ...inputState };

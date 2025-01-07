@@ -10,7 +10,9 @@ const Login = () => {
     email: "",
     password: "",
   });
+  // handle sign in with validation
   const handleSignIn = () => {
+    // check if any fleid is empty
     for (let ele in inputState) {
       if (inputState[ele].trim() == "") {
         toast.error(`Please enter ${ele} field`);
@@ -27,9 +29,11 @@ const Login = () => {
       user?.email == inputState.email &&
       bcrypt.compareSync(inputState.password, user?.password)
     ) {
+      // after login set session to active and navigate
       sessionStorage.setItem("session", "active");
       return navigate("/home");
     } else {
+      // if not correct details show toast
       toast("Please enter correct credentials");
     }
   };

@@ -7,6 +7,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { usetheme } from "../../services/providers/ThemeProvider.jsx";
 import style from "./sidebar.module.scss";
 import { useTodos } from "../../services/store/Store.jsx";
+// random color genarator function
 function getRandomColor() {
   let letters = "0123456789ABCDEF";
   let color = "#";
@@ -16,15 +17,19 @@ function getRandomColor() {
   return color;
 }
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
+  // global state
   const [_, setTodos] = useTodos();
   const [theme] = usetheme();
+  // local states
   const [selectedCategory, setSelectedCategory] = useState("");
   const [newCategory, setNewCategory] = useState("");
   const [deletedCategoryIn, SetDeletedCategory] = useState(null);
+  // todo setter fucntion
   const todoSetter = () => {
     let data = JSON.parse(localStorage.getItem("todos")) ?? [];
     setTodos(data?.filter((ele) => ele?.status !== "completed"));
   };
+  // category add function
   const addCategory = () => {
     if (newCategory.trim("") !== "" && newCategory.length < 12) {
       sidebar.push({
@@ -40,14 +45,17 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       toast.error("Please enter valid Category within 12 charcters");
     }
   };
+  // category delete func
   const handleDeleteClick = () => {
     sidebar?.splice(deletedCategoryIn, 1);
     localStorage.setItem("sidebar", JSON.stringify(sidebar));
     SetDeletedCategory(null);
   };
+  // sidebar close func
   const handleClose = () => {
     setShowSidebar(false);
   };
+  // fillter and settodos on category changes
   useEffect(() => {
     if (selectedCategory == "") {
       todoSetter();
@@ -61,12 +69,13 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       );
     }
   }, [selectedCategory]);
-
+  // hide sidebar if its not empty in small screen
   useEffect(() => {
     if (selectedCategory !== "") {
       setShowSidebar(false);
     }
   }, [selectedCategory]);
+  // handle category delete
   useEffect(() => {
     if (deletedCategoryIn == null || deletedCategoryIn == undefined) {
       return;
@@ -141,16 +150,6 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                 );
               })}
             </ul>
-            {/* <div className="flex flex-col gap-5">
-              <button
-                className="flex gap-3 text-slate-700 items-center hover:text-green-400 transition-all w-full"
-                onClick={() => {
-                  setSelectedCategory("completed");
-                }}
-              >
-                <AiOutlineFileDone /> <span>Completed Task</span>
-              </button>
-            </div> */}
           </div>
         </div>
         <div className="flex flex-col gap-2 bottom-10 left-0  mx-auto  ">

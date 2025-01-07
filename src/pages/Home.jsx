@@ -13,8 +13,10 @@ import { useTodos } from "../services/store/Store";
 import { sidebar } from "../constants/constant";
 
 const Home = () => {
+  // global states
   const [theme] = usetheme();
   const [_, setTodos] = useTodos();
+  // local states
   const [modalShow, setModalShow] = useState(false);
   const [newTask, setnewTask] = useState("");
   const [taskCategory, setTaskCategory] = useState(() => {
@@ -22,6 +24,7 @@ const Home = () => {
     return CATAGORY?.length > 0 ? CATAGORY[0]?.title : "";
   });
   const [showSidebar, setShowSidebar] = useState(false);
+  // handle todo add modal
   const handleModalShow = () => {
     setModalShow(!modalShow);
     setnewTask("");
@@ -30,6 +33,7 @@ const Home = () => {
       return CATAGORY?.length > 0 ? CATAGORY[0]?.title : "";
     });
   };
+  // todo add func with validation
   const handleTaskAdd = () => {
     let date = new Date();
     let id = Math.floor(Math.random() * 999);
@@ -55,12 +59,13 @@ const Home = () => {
       });
     }
   };
-
+  // handle sidebar open and close in small screen
   const handleHamClick = () => {
     setShowSidebar(true);
   };
   return (
     <>
+      {/* scroll restoration if the page come from another place */}
       <ScrollRestoration />
       <div className={cl(theme ? "bg-white" : "bg-slate-900")}>
         <Header />
@@ -93,6 +98,7 @@ const Home = () => {
           </main>
         </div>
       </div>
+      {/* modal */}
       <div
         className={cl(
           "modal fixed top-0 left-0 bg-[#f0f0f07b] w-screen h-screen",
