@@ -6,6 +6,7 @@ import { usetheme } from "../../services/providers/ThemeProvider";
 import useUserHook from "../../hooks/UserHook";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { useTodos } from "../../services/store/Store";
+import toast from "react-hot-toast";
 // styles
 
 const Header = () => {
@@ -17,6 +18,8 @@ const Header = () => {
   const handleLogout = () => {
     // clear the session
     sessionStorage.removeItem("session");
+    // show toast message
+    toast.success("Logout Successfully!!");
     // navigate to auth page
     navigate("/", { replace: true });
   };

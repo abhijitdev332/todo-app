@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Header, Sidebar } from "../includes/includes";
 import { TodoList } from "../components/component";
 import toast, { Toaster } from "react-hot-toast";
@@ -39,6 +39,9 @@ const Home = () => {
     let id = Math.floor(Math.random() * 999);
     let data = JSON.parse(localStorage.getItem("todos")) ?? [];
     if (newTask.trim() !== "" && taskCategory !== "") {
+      if (newTask.trim("").length > 30) {
+        return toast("please enter todo less than 30 charcters!!");
+      }
       let newData = {
         id: id,
         title: newTask,
