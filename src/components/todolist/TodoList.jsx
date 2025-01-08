@@ -17,9 +17,9 @@ const TodoList = () => {
           {fillterTodo?.length > 0 ? (
             fillterTodo.map((ele, i) => <Todo todo={ele} key={i + 1} />)
           ) : (
-            <div className="p-3 bg-slate-300 rounded flex flex-col gap-2 items-center">
+            <div className="p-3 bg-slate-300 rounded flex flex-col gap-2 items-center font-medium">
               <MdErrorOutline fontSize={"1.3rem"} color="red" />
-              <span>No Todos in here</span>
+              <span>No Task in here</span>
               <span>Please Add a Todo!!</span>
             </div>
           )}

@@ -1,14 +1,18 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext("");
 
 const ThemeProvider = ({ children }) => {
   // default light mode
-  const [theme, setTheme] = useState(true);
+  const [theme, setTheme] = useState(!!localStorage.getItem("theme") || true);
   // change theme func
   const ChangeTheme = () => {
     setTheme(!theme);
   };
+  // run effect on theme change and set to localstorage
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
   return (
     <>
       <ThemeContext.Provider value={[theme, ChangeTheme]}>

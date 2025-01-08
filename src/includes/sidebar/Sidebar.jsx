@@ -110,13 +110,13 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
         >
           <div className="flex flex-col relative h-fit">
             <div
-              className="font-bold lg:text-xl text-lg font-serif cursor-pointer hover:text-green-400 transition-all"
+              className="font-semibold cursor-pointer hover:text-green-400 transition-all"
               onClick={() => {
                 setShowSidebar(false);
                 todoSetter();
               }}
             >
-              All tasks
+              Pending Tasks
             </div>
             <ul className="flex flex-col gap-5 py-10">
               {sidebar.map((ele, i) => {
